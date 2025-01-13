@@ -12,9 +12,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "Clientes")
+@Data
+@NoArgsConstructor
 public class Cliente {
 
     @Id // Primary Key
@@ -25,6 +29,7 @@ public class Cliente {
     private String nombre;
 
     private String apellido;
+    private String email;
 
     @Column(unique = true, nullable = false) // Va a ser Unico y No Nulo
     private int dni;
@@ -37,77 +42,17 @@ public class Cliente {
 
     private LocalDateTime createdAt;
 
-    public Cliente() {
-        super();
-    }
-
-    public Cliente(String nombre, String apellido, int dni, String codigoCliente) {
-        this();
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni = dni;
-        this.codigoCliente = codigoCliente;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public int getDni() {
-        return dni;
-    }
-
-    public void setDni(int dni) {
-        this.dni = dni;
-    }
-
-    public String getCodigoCliente() {
-        return codigoCliente;
-    }
-
-    public void setCodigoCliente(String codigoCliente) {
-        this.codigoCliente = codigoCliente;
-    }
-
-    public List<Pedido> getPedidos() {
-        return pedidos;
-    }
-
-    public void setPedidos(List<Pedido> pedidos) {
-        this.pedidos = pedidos;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     @Override
     public String toString() {
-        return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", codigoCliente="
-                + codigoCliente + ", pedidos=" + pedidos + ", createdAt=" + createdAt + "]";
+        return "Cliente{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", email='" + email + '\'' +
+                ", dni=" + dni +
+                ", codigoCliente='" + codigoCliente + '\'' +
+                ", pedidos=" + pedidos +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }
