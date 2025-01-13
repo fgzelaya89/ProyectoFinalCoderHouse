@@ -16,6 +16,7 @@ public class PedidoController {
     @PostMapping
     public ResponseEntity<Pedido> crearPedido(@RequestBody Pedido pedido) {
         Pedido nuevoPedido = pedidoService.crearPedido(pedido);
+        System.out.println("nuevoPedido: "+nuevoPedido.toString());
         return ResponseEntity.status(201).body(nuevoPedido);
     }
 }
