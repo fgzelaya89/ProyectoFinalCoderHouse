@@ -1,5 +1,7 @@
 package com.coderhouse.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +18,7 @@ public class DetallePedido {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)
+    @JsonBackReference // No serializa esta relación
     private Pedido pedido;
 
     @ManyToOne
