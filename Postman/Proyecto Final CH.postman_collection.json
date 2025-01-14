@@ -1,0 +1,289 @@
+{
+	"info": {
+		"_postman_id": "a1271eec-7e2d-401c-a177-942dc03e6deb",
+		"name": "Proyecto Final CH",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18171248"
+	},
+	"item": [
+		{
+			"name": "ABM Cliente",
+			"item": [
+				{
+					"name": "Listar Clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Cliente DNI",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/buscar/123789",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"buscar",
+								"123789"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Cliente",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generar valores dinámicos\r",
+									"const nombres = [\"Fernando\", \"Juan\", \"Pedro\", \"Luis\", \"Carlos\"];\r",
+									"const apellidos = [\"Zelaya\", \"Perez\", \"Gonzalez\", \"Lopez\", \"Martinez\"];\r",
+									"const dominio = \"@example.com\";\r",
+									"\r",
+									"// Selección aleatoria de nombres y apellidos\r",
+									"const nombre = nombres[Math.floor(Math.random() * nombres.length)];\r",
+									"const apellido = apellidos[Math.floor(Math.random() * apellidos.length)];\r",
+									"\r",
+									"// Generar email dinámico\r",
+									"const email = `${nombre.toLowerCase()}.${apellido.toLowerCase()}${dominio}`;\r",
+									"\r",
+									"// Generar un DNI aleatorio entre 30,000,000 y 50,000,000\r",
+									"const dni = Math.floor(Math.random() * (50000000 - 30000000) + 30000000);\r",
+									"\r",
+									"// Configurar variables de entorno o colección\r",
+									"pm.variables.set(\"nombre\", nombre);\r",
+									"pm.variables.set(\"apellido\", apellido);\r",
+									"pm.variables.set(\"email\", email);\r",
+									"pm.variables.set(\"dni\", dni);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"{{nombre}}\",\r\n    \"apellido\": \"{{apellido}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"dni\": {{dni}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ABM Producto",
+			"item": [
+				{
+					"name": "Add",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generar valores dinámicos\r",
+									"const nombres = [\"Laptop\", \"Smartphone\", \"Tablet\", \"Monitor\", \"Teclado\"];\r",
+									"const descripciones = [\r",
+									"    \"Laptop de alto rendimiento\",\r",
+									"    \"Smartphone con cámara avanzada\",\r",
+									"    \"Tablet ligera y potente\",\r",
+									"    \"Monitor Full HD\",\r",
+									"    \"Teclado mecánico retroiluminado\"\r",
+									"];\r",
+									"const categorias = [\"Electrónica\", \"Accesorios\", \"Computación\", \"Móviles\"];\r",
+									"const precios = [2500, 1000, 600, 200, 80];\r",
+									"\r",
+									"// Selección aleatoria de nombre, descripción y categoría\r",
+									"const nombreProducto = nombres[Math.floor(Math.random() * nombres.length)];\r",
+									"const descripcionProducto = descripciones[Math.floor(Math.random() * descripciones.length)];\r",
+									"const categoriaProducto = categorias[Math.floor(Math.random() * categorias.length)];\r",
+									"\r",
+									"// Generar valores aleatorios para stock y precio\r",
+									"const stockProducto = Math.floor(Math.random() * 50) + 1; // Stock entre 1 y 50\r",
+									"const precioProducto = precios[Math.floor(Math.random() * precios.length)];\r",
+									"\r",
+									"// Configurar variables de entorno o colección\r",
+									"pm.variables.set(\"nombreProducto\", nombreProducto);\r",
+									"pm.variables.set(\"descripcionProducto\", descripcionProducto);\r",
+									"pm.variables.set(\"categoriaProducto\", categoriaProducto);\r",
+									"pm.variables.set(\"stockProducto\", stockProducto);\r",
+									"pm.variables.set(\"precioProducto\", precioProducto);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"{{nombreProducto}}\",\r\n    \"descripcion\": \"{{descripcionProducto}}\",\r\n    \"categoria\": \"{{categoriaProducto}}\",\r\n    \"stock\": {{stockProducto}},\r\n    \"precio\": {{precioProducto}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/productos/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"productos",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Productos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/productos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Producto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/productos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"productos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Quitar Producto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/productos/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"productos",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pedidos",
+			"item": [
+				{
+					"name": "CrearPedido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cliente\": {\r\n        \"id\": 1\r\n    },\r\n    \"detalles\": [\r\n        {\r\n            \"producto\": {\r\n                \"id\": 2\r\n            },\r\n            \"cantidad\": 1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
