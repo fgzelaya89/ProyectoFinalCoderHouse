@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+
 @Service
 public class PedidoService {
 
@@ -53,5 +54,14 @@ public class PedidoService {
 
         // Guardar el pedido
         return pedidoRepository.save(pedido);
+    }
+
+    public List<Pedido> obtenerTodosPedidosConDetalles() {
+        return pedidoRepository.findAllWithDetails();
+    }
+
+    public Pedido obtenerPedidoPorId(Long id) {
+        return pedidoRepository.findByIdWithDetails(id)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado con ID: " + id));
     }
 }

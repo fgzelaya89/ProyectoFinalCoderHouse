@@ -18,16 +18,21 @@ public class DetallePedido {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)
-    @JsonBackReference // No serializa esta relación
+    @JsonBackReference
     private Pedido pedido;
 
     @ManyToOne
     @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
 
+    @Column(nullable = false)
     private int cantidad;
-    private double monto; // Precio unitario
-    private double montoParcial; // Calculado automáticamente
+
+    @Column(nullable = false)
+    private double monto;
+
+    @Column(nullable = false)
+    private double montoParcial;
 
     @PrePersist
     @PreUpdate
