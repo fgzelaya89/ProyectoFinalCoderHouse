@@ -1,8 +1,10 @@
 package com.coderhouse.services;
 
+import com.coderhouse.models.Cliente;
 import com.coderhouse.models.DetallePedido;
 import com.coderhouse.models.Pedido;
 import com.coderhouse.models.Producto;
+import com.coderhouse.repositories.ClienteRepository;
 import com.coderhouse.repositories.PedidoRepository;
 import com.coderhouse.repositories.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +65,44 @@ public class PedidoService {
     public Pedido obtenerPedidoPorId(Long id) {
         return pedidoRepository.findByIdWithDetails(id)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado con ID: " + id));
+    }
+
+    //////////////
+
+    private final ClienteRepository clienteRepository;
+
+
+    public PedidoService(PedidoRepository pedidoRepository, ClienteRepository clienteRepository, ProductoRepository productoRepository) {
+        this.pedidoRepository = pedidoRepository;
+        this.clienteRepository = clienteRepository;
+        this.productoRepository = productoRepository;
+    }
+
+    @Transactional
+    public Pedido addPedido(Pedido pedido) {
+        // Validar los clientes
+        List<Cliente> clientes = pedido.getClientes().stream()
+                .map(cliente -> clienteRepository.findById(cliente.getId())
+                        .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + cliente.getId())))
+                .toList();
+
+        // Validar los detalles del pedido y calcular el monto total
+        double montoTotal = 0;
+        for (DetallePedido detalle : pedido.getDetalles()) {
+            Producto producto = productoRepository.findById(detalle.getProducto().getId())
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + detalle.getProducto().getId()));
+
+            detalle.setProducto(producto);
+            detalle.setMonto(producto.getPrecio());
+            detalle.setMontoParcial(detalle.getCantidad() * producto.getPrecio());
+            montoTotal += detalle.getMontoParcial();
+        }
+
+        // Asignar los clientes y detalles al pedido
+        pedido.setClientes(clientes);
+        pedido.setMontoTotal(montoTotal);
+
+        // Guardar el pedido
+        return pedidoRepository.save(pedido);
     }
 }

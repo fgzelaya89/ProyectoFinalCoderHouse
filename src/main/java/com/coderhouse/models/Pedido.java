@@ -33,7 +33,7 @@ public class Pedido {
     private List<Cliente> clientes = new ArrayList<>();
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference // Evita recursividad
     private List<DetallePedido> detalles = new ArrayList<>();
 
     private Double montoTotal;

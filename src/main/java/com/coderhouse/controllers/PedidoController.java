@@ -39,4 +39,13 @@ public class PedidoController {
         }
     }
 
+
+    /////////
+    @PostMapping("/addPedido")
+    public ResponseEntity<Pedido> addPedido(@RequestBody Pedido pedido) {
+        Pedido nuevoPedido = pedidoService.addPedido(pedido);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPedido);
+    }
+    ////////
+
 }

@@ -18,7 +18,7 @@ public class DetallePedido {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference // Evita recursividad
     private Pedido pedido;
 
     @ManyToOne

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,7 @@ public class Cliente {
     private String codigoCliente;
 
     @ManyToMany(mappedBy = "clientes", fetch = FetchType.LAZY)
+    @JsonBackReference // Evita recursividad
     private List<Pedido> pedidos = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
