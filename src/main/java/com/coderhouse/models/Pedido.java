@@ -1,5 +1,6 @@
 package com.coderhouse.models;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import java.util.HashSet;
@@ -37,6 +38,9 @@ public class Pedido {
     private List<DetallePedido> detalles = new ArrayList<>();
 
     private Double montoTotal;
+
+    @Column(name = "fecha_hora")
+    private LocalDateTime fechaHora;
 
     @Override
     public String toString() {
