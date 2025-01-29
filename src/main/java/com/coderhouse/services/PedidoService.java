@@ -92,23 +92,4 @@ public class PedidoService {
         // Guardar el pedido
         return pedidoRepository.save(pedido);
     }
-
-    private LocalDateTime obtenerFechaActual() {
-        RestTemplate restTemplate = new RestTemplate();
-
-        try {
-            String response = restTemplate.getForObject(TIME_API_URL, String.class);
-
-            if (response != null) {
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode jsonNode = mapper.readTree(response);
-
-                String fechaHora = jsonNode.get("dateTime").asText();
-                return LocalDateTime.parse(fechaHora, DateTimeFormatter.ISO_DATE_TIME);
-            }
-        } catch (Exception e) {
-            System.out.println("Fallo al obtener la fecha del API, se usará la fecha local. Error: " + e.getMessage());
-        }
-        return LocalDateTime.now();
-    }
 }
