@@ -39,7 +39,7 @@ Este proyecto es una aplicación backend desarrollada en Java utilizando el fram
 ### Instalación
 1. Clona el repositorio:
    ```bash
-   git clone <URL_REPOSITORIO>
+   git clone <https://github.com/fgzelaya89/ProyectoFinalCoderHouse.git>
    ```
 2. Configura la base de datos en el archivo `application.properties`.
 3. Ejecuta el proyecto:

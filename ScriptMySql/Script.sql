@@ -6,3 +6,5 @@ select * from detalle_pedidos dp;
 select * from pedido_cliente pc;
 select * from pedidos p;
 select * from productos pd;
+
+ALTER TABLE Pedidos ADD fecha_hora TIMESTAMP;

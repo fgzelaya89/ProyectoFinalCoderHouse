@@ -1,5 +1,8 @@
 package com.coderhouse.services;
 
+import com.coderhouse.exceptions.ClienteNotFoundException;
+import com.coderhouse.exceptions.ProductoNoEncontradoException;
+import com.coderhouse.exceptions.ProductoSinStockException;
 import com.coderhouse.models.Cliente;
 import com.coderhouse.models.DetallePedido;
 import com.coderhouse.models.Pedido;
@@ -7,6 +10,8 @@ import com.coderhouse.models.Producto;
 import com.coderhouse.repositories.ClienteRepository;
 import com.coderhouse.repositories.PedidoRepository;
 import com.coderhouse.repositories.ProductoRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
@@ -23,8 +28,10 @@ import java.util.List;
 
 @Service
 public class PedidoService {
-    private static final String WORLD_CLOCK_API = "http://worldclockapi.com/api/json/utc/now";
+    private static final String TIME_API_URL = "https://timeapi.io/api/Time/current/zone?timeZone=America/Argentina/Buenos_Aires";
 
+    @Autowired
+    private TimeApiService timeApiService; // Esto asegura que sea gestionado por Spring
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -56,14 +63,18 @@ public class PedidoService {
         // Validar los clientes
         List<Cliente> clientes = pedido.getClientes().stream()
                 .map(cliente -> clienteRepository.findById(cliente.getId())
-                        .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + cliente.getId())))
+                        .orElseThrow(() -> new ClienteNotFoundException("Cliente no encontrado con ID: " + cliente.getId())))
                 .toList();
 
         // Validar los detalles del pedido y calcular el monto total
         double montoTotal = 0;
         for (DetallePedido detalle : pedido.getDetalles()) {
             Producto producto = productoRepository.findById(detalle.getProducto().getId())
-                    .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + detalle.getProducto().getId()));
+                    .orElseThrow(() -> new ProductoNoEncontradoException("Producto no encontrado con ID: " + detalle.getProducto().getId()));
+
+            if (producto.getStock() < detalle.getCantidad()) {
+                throw new ProductoSinStockException("Producto sin stock suficiente. ID: " + producto.getId());
+            }
 
             detalle.setProducto(producto);
             detalle.setMonto(producto.getPrecio());
@@ -76,7 +87,7 @@ public class PedidoService {
         pedido.setMontoTotal(montoTotal);
 
         // Obtener la fecha del servicio o usar LocalDateTime.now() como fallback
-        pedido.setFechaHora(obtenerFechaActual());
+        pedido.setFechaHora(timeApiService.obtenerFechaActual());
 
         // Guardar el pedido
         return pedidoRepository.save(pedido);
@@ -86,14 +97,17 @@ public class PedidoService {
         RestTemplate restTemplate = new RestTemplate();
 
         try {
-            String response = restTemplate.getForObject(WORLD_CLOCK_API, String.class);
-            // Parsear el resultado
-            if (response != null && response.contains("currentDateTime")) {
-                String fecha = response.split("\"currentDateTime\":\"")[1].split("\"")[0];
-                return LocalDateTime.parse(fecha, DateTimeFormatter.ISO_DATE_TIME);
+            String response = restTemplate.getForObject(TIME_API_URL, String.class);
+
+            if (response != null) {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode jsonNode = mapper.readTree(response);
+
+                String fechaHora = jsonNode.get("dateTime").asText();
+                return LocalDateTime.parse(fechaHora, DateTimeFormatter.ISO_DATE_TIME);
             }
-        } catch (RestClientException e) {
-            System.out.println("Fallo al obtener la fecha del API, se usará la fecha local.");
+        } catch (Exception e) {
+            System.out.println("Fallo al obtener la fecha del API, se usará la fecha local. Error: " + e.getMessage());
         }
         return LocalDateTime.now();
     }
