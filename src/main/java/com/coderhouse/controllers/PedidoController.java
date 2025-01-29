@@ -17,13 +17,6 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    @PostMapping
-    public ResponseEntity<Pedido> crearPedido(@RequestBody Pedido pedido) {
-        Pedido nuevoPedido = pedidoService.crearPedido(pedido);
-        ResponseEntity.status(HttpStatus.CREATED).body(nuevoPedido);
-        //ResponseEntity.status(201).body(nuevoPedido);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPedido);
-    }
     @GetMapping
     public List<Pedido> obtenerPedidosConDetalles() {
         return pedidoService.obtenerTodosPedidosConDetalles();
@@ -38,14 +31,9 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-
-
-    /////////
     @PostMapping("/addPedido")
     public ResponseEntity<Pedido> addPedido(@RequestBody Pedido pedido) {
         Pedido nuevoPedido = pedidoService.addPedido(pedido);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPedido);
     }
-    ////////
-
 }
