@@ -1,73 +1,63 @@
-# Gestión de Ventas y Control de Stock
+# Proyecto Final - Gestor de Ventas y Stock
 
-Este proyecto fue desarrollado como parte del curso de **Coder House** y está destinado a gestionar las ventas y controlar el stock de productos de manera eficiente. La aplicación permite realizar operaciones relacionadas con clientes, productos, pedidos, y la gestión del stock asociado.
+Este proyecto es una aplicación backend desarrollada en Java utilizando el framework Spring Boot. Proporciona funcionalidades para gestionar ventas y el stock de productos de una tienda.
 
-## Funcionalidades Principales
+## ⚡ Características
+- **Gestor de ventas:** Permite la creación, actualización y consulta de ventas realizadas.
+- **Manejo de stock:** Permite consultar y actualizar el stock disponible.
+- **API REST:** Exposición de servicios REST para integraciones externas.
+- **Documentación Swagger:** Documentación automatizada y explorable mediante Swagger.
 
-1. **Gestión de Clientes**:
-    - Crear nuevos clientes.
-    - Consultar clientes por DNI.
-    - Listar todos los clientes.
+## 🔧 Tecnologías Utilizadas
+- **Java 21**: Lenguaje principal del proyecto.
+- **Spring Boot 3.4.0**: Framework para el desarrollo de aplicaciones.
+- **Spring Data JPA y JDBC**: Manejo de la persistencia de datos.
+- **MySQL**: Base de datos relacional.
+- **Hibernate 6.4.4.Final**: ORM para la gestión de entidades.
+- **Lombok**: Reducción de código repetitivo.
+- **Swagger (SpringDoc OpenAPI)**: Documentación de la API.
 
-2. **Gestión de Productos**:
-    - Crear, actualizar, consultar y eliminar productos.
-    - Control del stock de productos.
+## 🔢 Endpoints Disponibles
 
-3. **Gestión de Pedidos**:
-    - Crear pedidos asociados a un cliente.
-    - Detallar los productos seleccionados dentro del pedido.
-    - Descontar automáticamente el stock de los productos al registrar un pedido.
+### Productos
+- `GET /api/productos`: Obtener lista de productos.
+- `GET /api/productos/{id}`: Consultar información de un producto por su ID.
+- `POST /api/productos`: Crear un nuevo producto.
+- `PUT /api/productos/{id}`: Actualizar información de un producto.
+- `DELETE /api/productos/{id}`: Eliminar un producto.
 
-4. **Validaciones y Manejo de Errores**:
-    - Validación de datos obligatorios en todas las entidades.
-    - Manejo de excepciones como:
-        - Cliente ya registrado.
-        - Producto con stock insuficiente.
-        - Entidades no encontradas.
+### Ventas
+- `GET /api/ventas`: Obtener lista de ventas.
+- `POST /api/ventas`: Registrar una nueva venta.
 
----
-
-## Tecnologías Utilizadas
-
-### Backend
+## 📊 Configuración
+### Requisitos
 - **Java 21**
-- **Spring Boot**: Framework principal para la creación del backend.
-- **Spring Data JPA**: Gestión de la persistencia con Hibernate.
-- **Jakarta Persistence API (JPA)**: Para el manejo de entidades y transacciones.
-- **Lombok**: Reducción de código boilerplate como getters, setters y constructores.
-- **MySQL**: Base de datos relacional para almacenar la información.
-- **Hibernate**: ORM para la gestión de las entidades.
+- **Maven 3.8 o superior**
+- **MySQL Server**
 
-### Dependencias Principales
-- **Spring Boot Starter Web**: Para construir servicios RESTful.
-- **Spring Boot Starter Data JPA**: Gestión de las transacciones y consultas a la base de datos.
-- **MySQL Connector**: Driver JDBC para conectar con MySQL.
-- **Lombok**: Simplificación del código repetitivo.
+### Instalación
+1. Clona el repositorio:
+   ```bash
+   git clone <URL_REPOSITORIO>
+   ```
+2. Configura la base de datos en el archivo `application.properties`.
+3. Ejecuta el proyecto:
+   ```bash
+   mvn spring-boot:run
+   ```
 
----
+## 🔗 Swagger
+Accede a la documentación de la API desde:
+```
+http://localhost:8080/swagger-ui/index.html
+```
 
-## Estructura del Proyecto
+## 🛠️ Datos de Contacto
+- **Desarrollador:** [Fernando Zelaya]
+- **Correo:** [fgzelaya89@gmail.com]
+- **LinkedIn:** [https://www.linkedin.com/in/fgzelaya/]
 
-```plaintext
-src/main/java/com/coderhouse
-├── controller          # Controladores REST para gestionar las solicitudes HTTP
-│   ├── ClienteController.java
-│   ├── ProductoController.java
-│   ├── PedidoController.java
-├── dao                 # Gestión de la persistencia con EntityManager
-│   └── DaoFactory.java
-├── exception           # Manejo centralizado de excepciones personalizadas
-│   ├── GlobalExceptionHandler.java
-│   ├── ClienteNotFoundException.java
-│   ├── StockInsuficienteException.java
-│   ├── DatosInvalidosException.java
-├── models              # Entidades que representan las tablas de la base de datos
-│   ├── Cliente.java
-│   ├── Producto.java
-│   ├── Pedido.java
-│   ├── DetallePedido.java
-├── service             # Lógica de negocio
-│   ├── ClienteService.java
-│   ├── ProductoService.java
-│   ├── PedidoService.java
-├── ProyectoFinalApplication.java # Clase principal del proyecto
+## 🛡️ Licencia
+Este proyecto está bajo la licencia MIT.
+
